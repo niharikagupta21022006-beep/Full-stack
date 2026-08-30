@@ -83,7 +83,7 @@ DATABASES = {
         'NAME':'tradingcore_db',
         'USER':'postgres',
         'PASSWORD':'admin123',
-        'HOST':'localhost',
+        'HOST':'host.docker.internal',
         'PORT':'5432',
     }
 }
@@ -146,7 +146,7 @@ CHANNEL_LAYERS = {
     
 }
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
