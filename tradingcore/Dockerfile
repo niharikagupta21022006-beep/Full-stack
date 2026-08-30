@@ -7,4 +7,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+RUN python manage.py collectstatic --noinput
+
 CMD ["daphne","-b","0.0.0.0","-p","8000","tradingcore.asgi:application"]
