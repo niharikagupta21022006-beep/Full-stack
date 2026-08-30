@@ -14,6 +14,27 @@ function App() {
 
   useEffect(() => {
     fetchOrders();
+
+    const socket = new WebSocket('ws://127.0.0.1:8000/ws/orders/');
+
+    socket.onmessage = function(event){
+      const newOrder = JSON.parse(event.data);
+      console.log('Naya order aaya:',newOrder);
+
+      setOrders((prevOrders)=> [...prevOrders,newOrder]);
+    };
+
+    socket.onopen = function(){
+      console.log('WebSocket connected!');
+    };
+
+    socket.onclose = function(){
+      console.log('WebSocket disconnected');
+    };
+
+    return() => {
+      socket.close();
+    }
   },[]);
 
   const handleSubmit = (e) => {
