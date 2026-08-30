@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-(rmqu@nomivvp!n6+#rpa5o@emgofn0px!&(knu#6m28!a#*zp
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','tradingcore-web.onrender.com']
+CSRF_TRUSTED_ORIGINS = ['https://tradingcore-web.onrender.com']
 
 
 # Application definition
