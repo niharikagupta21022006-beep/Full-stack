@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(rmqu@nomivvp!n6+#rpa5o@emgofn0px!&(knu#6m28!a#*zp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','tradingcore-web.onrender.com']
 
 
 # Application definition
