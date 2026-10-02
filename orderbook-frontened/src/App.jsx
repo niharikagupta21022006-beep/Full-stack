@@ -1,66 +1,66 @@
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const[orders,setOrders] = useState([]);
-  const[price,setPrice] = useState('');
-  const[quantity,setQuantity] = useState('');
-  const[side,setSide] = useState('BUY');
-  const[isConnected,setIsConnected] = useState(false);
+  const [orders, setOrders] = useState([]);
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [side, setSide] = useState('BUY');
+  const [isConnected, setIsConnected] = useState(false);
 
   const fetchOrders = () => {
-    fetch('http://127.0.0.1:8000/api/orders')
-    .then(response => response.json())
-    .then(data => setOrders(data));
+    fetch('https://tradingcore-web.onrender.com/api/orders')
+      .then(response => response.json())
+      .then(data => setOrders(data));
   };
 
   useEffect(() => {
     fetchOrders();
 
-    const socket = new WebSocket('ws://127.0.0.1:8000/ws/orders/');
+    const socket = new WebSocket('wss://tradingcore-web.onrender.com/ws/orders/');
 
-    socket.onmessage = function(event){
+    socket.onmessage = function (event) {
       const newOrder = JSON.parse(event.data);
-      setOrders((prevOrders)=> [...prevOrders,newOrder]);
+      setOrders((prevOrders) => [...prevOrders, newOrder]);
     };
 
-    socket.onopen = function(){
+    socket.onopen = function () {
       setIsConnected(true);
     };
 
-    socket.onclose = function(){
+    socket.onclose = function () {
       setIsConnected(false);
     };
 
-    return() => {
+    return () => {
       socket.close();
     }
-  },[]);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch('http://127.0.0.1:8000/api/orders/',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
+    fetch('https://tradingcore-web.onrender.com/api/orders/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      body:JSON.stringify({
-        price:price,
-        quantity:quantity,
-        side:side,
+      body: JSON.stringify({
+        price: price,
+        quantity: quantity,
+        side: side,
       }),
     })
-    .then(response => response.json())
-    .then(() => {
-      fetchOrders();
-      setPrice('');
-      setQuantity('');
-    });
+      .then(response => response.json())
+      .then(() => {
+        fetchOrders();
+        setPrice('');
+        setQuantity('');
+      });
   };
 
-  const buyOrders = orders.filter(o => o.side === 'BUY').sort((a,b) => b.price - a.price);
-  const sellOrders = orders.filter(o => o.side === 'SELL').sort((a,b) => a.price - b.price);
+  const buyOrders = orders.filter(o => o.side === 'BUY').sort((a, b) => b.price - a.price);
+  const sellOrders = orders.filter(o => o.side === 'SELL').sort((a, b) => a.price - b.price);
 
   return (
     <div className="app">
@@ -91,7 +91,7 @@ function App() {
               onChange={(e) => setQuantity(e.target.value)}
               required
             />
-            <select value={side} onChange={(e) =>setSide(e.target.value)}>
+            <select value={side} onChange={(e) => setSide(e.target.value)}>
               <option value="BUY">BUY</option>
               <option value="SELL">SELL</option>
             </select>
